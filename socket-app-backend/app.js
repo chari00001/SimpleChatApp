@@ -10,7 +10,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: ["GET", "POST"],
   },
   pingTimeout: 60000,
@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
   // Mevcut mesajları saklamak için bir dizi
   const messages = [];
 
-  socket.on('requestUserId', () => {
+  socket.on("requestUserId", () => {
     const userId = uuidv4();
     console.log("Kullanıcı ID oluşturuldu:", userId);
     socket.emit("userId", userId);
@@ -45,4 +45,5 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(4000, () => console.log("Server is running on port 4000"));
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
